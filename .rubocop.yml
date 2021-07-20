@@ -1,0 +1,365 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - ./linters/security/unscoped_query.rb
+
+AllCops:
+  TargetRubyVersion: 2.6
+  DisabledByDefault: true
+  Include:
+    # - '**/Rakefile'
+    # - '**/config.ru'
+    - 'app/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'spec/**/*.rb'
+    - 'cron_jobs/**/*.rb'
+    - 'db/migrate/**/*.rb'
+    - 'engines/**/*.rb'
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'test/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'bin/*'
+
+# TODO: Step this down
+Layout/LineLength:
+  AutoCorrect: false
+  Enabled: true
+  Max: 600
+  Exclude:
+      - 'spec/**/*.rb'
+
+# Style/StringLiterals:
+#   EnforcedStyle: single_quotes
+
+Rails:
+  Enabled: true
+Security/UnscopedQuery:
+  Enabled: true
+  Include:
+    - 'app/controllers/**/*.rb'
+    - 'app/graphql/**/*.rb'
+    - 'engines/borrower/service/**/*.rb'
+    - 'engines/borrower/app/controllers/**/*.rb'
+    - 'engines/borrower/app/graphql/**/*.rb'
+Rails/TimeZone:
+  Enabled: false
+Rails/ActiveRecordAliases:
+  Enabled: true # Use update instead of update_attributes
+Rails/DynamicFindBy:
+  Enabled: true  # Use find_by instead of dynamic find_by_email
+Rails/Output:
+  Enabled: true # Do not write to stdout. Use Rails's logger if you want to log.
+  Exclude:
+    - lib/sndeploy.rb
+    - lib/ios_bitbucket_helper.rb
+Rails/OutputSafety:
+  Enabled: false
+Rails/SkipsModelValidations:
+  Enabled: false
+Rails/Date:
+  Enabled: false
+Rails/Present:
+  Enabled: false
+Rails/UnknownEnv:
+  Enabled: true # should look at
+  Environments:
+    - production
+    - development
+    - test
+    - staging
+Rails/Blank:
+  Enabled: false
+Rails/EnvironmentComparison:
+  Enabled: true # favor Rails.env.staging? over Rails.env == "staging"
+Rails/Presence:
+  Enabled: false
+Rails/BelongsTo:
+  Enabled: false # You specified required: false, in Rails > 5.0 the required option is deprecated and you want to use optional: true. (belongs_to :owner, polymorphic: true, required: true)
+Rails/Delegate:
+  Enabled: false # fixes method overrides using delegate: syntax. Will cause problems with serializers I think
+Rails/ApplicationRecord:
+  Enabled: false # should look at (create_guid method needs some work)
+Rails/InverseOf:
+  Enabled: false
+Rails/FindBy:
+  Enabled: true # Use find_by instead of where.first
+Rails/ReadWriteAttribute:
+  Enabled: false
+Rails/Validation:
+  Enabled: false
+Rails/HasManyOrHasOneDependent:
+  Enabled: true # should look at because of missing dependent destroys
+Rails/ReflectionClassName:
+  Enabled: false # Use a string value for class_name. (settings_object.rb uses some fanciness and will always trip this up)
+Rails/FilePath:
+  Enabled: false
+Rails/FindEach:
+  Enabled: false
+Rails/HasAndBelongsToMany:
+  Enabled: false # Prefer has_many :through to has_and_belongs_to_many.
+Rails/HelperInstanceVariable:
+  Enabled: false
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+Rails/HttpStatus:
+  Enabled: false
+Rails/PluralizationGrammar:
+  Enabled: true
+Rails/ApplicationJob:
+  Enabled: true
+Rails/RequestReferer:
+  Enabled: true
+Rails/EnumHash:
+  Enabled: false
+Rails/CreateTableWithTimestamps:
+  Description: Checks the migration for which timestamps are not included when creating a new table.
+  Enabled: true
+Performance:
+  Enabled: true
+# this turns off the warnings about not using =~
+Performance/RedundantMatch:
+  Enabled: false
+# turn off delete/gsub warnings - http://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Performance/StringReplacement
+Performance/StringReplacement:
+  Enabled: false
+Performance/Detect: # Performance/Detect: Use find instead of select.first
+  Enabled: false
+Performance/Count:  #Performance/Count: Use count instead of select...count
+  Enabled: false
+Performance/RegexpMatch:
+  Enabled: false
+Security:
+  Enabled: true
+Security/Open:
+  Enabled: false
+Lint/AmbiguousOperator:
+  Description: Checks for ambiguous operators in the first argument of a method invocation
+    without parentheses.
+  StyleGuide: https://github.com/rubocop-hq/ruby-style-guide#parens-as-args
+  Enabled: true
+Lint/AssignmentInCondition:
+  Enabled: true
+Lint/BooleanSymbol:
+  Enabled: true
+Lint/CircularArgumentReference:
+  Enabled: true
+Lint/DuplicateMethods:
+  Enabled: true
+Lint/DuplicateCaseCondition:
+  Enabled: true
+Lint/DuplicateHashKey:
+  Description: Check for duplicate keys in hash literals.
+  Enabled: true
+Lint/Debugger: # makes sure we don't allow byebug in code
+  Enabled: true
+Lint/EachWithObjectArgument:
+  Enabled: true
+Lint/ElseLayout:
+  Enabled: true
+Lint/EmptyExpression:
+  Enabled: true
+Lint/EmptyInterpolation:
+  Description: Checks for empty string interpolation.
+  Enabled: true
+Lint/EmptyWhen:
+  Enabled: true
+Lint/EnsureReturn:
+  Enabled: true
+Lint/FlipFlop:
+  Enabled: true
+Lint/FloatOutOfRange:
+  Enabled: true
+Lint/ImplicitStringConcatenation:
+  Description: Checks for adjacent string literals on the same line, which could better
+    be represented as a single string literal.
+  Enabled: true
+Lint/InterpolationCheck:
+  Enabled: true
+Lint/MissingCopEnableDirective:
+  Enabled: true
+Lint/MultipleComparison:
+  Enabled: true
+Lint/NestedMethodDefinition:
+  Enabled: true
+Lint/NonDeterministicRequireOrder:
+  Enabled: true
+#TODO: Enable
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+Lint/RedundantCopEnableDirective:
+  Enabled: true
+Lint/RedundantRequireStatement:
+  Enabled: true
+Lint/RequireParentheses:
+  Enabled: true
+#TODO: Enable
+Lint/RescueException:
+  Enabled: true
+Lint/RescueType:
+  Enabled: true
+Lint/ReturnInVoidContext:
+  Enabled: true
+#TODO: Enable
+Lint/SafeNavigationChain:
+  Enabled: true
+Lint/ShadowedException:
+  Enabled: true
+Lint/UnifiedInteger:
+  Enabled: true
+Lint/UnreachableCode:
+  Enabled: true
+Lint/UnusedBlockArgument:
+  Enabled: false
+# Lint/UselessAssignment:
+#   Enabled: true
+# Lint/UnusedMethodArgument:
+#   Enabled: true
+# Lint:
+#   Enabled: false
+Lint/UselessElseWithoutRescue:
+  Description: Checks for useless `else` in `begin..end` without `rescue`.
+  Enabled: true
+Lint/UselessSetterCall:
+  Description: Checks for useless setter call to a local variable.
+  Enabled: true
+#TODO: Enable
+Lint/Void:
+  Enabled: false
+
+## Layout
+Layout/TrailingWhitespace:
+  Enabled: true
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+Layout/DotPosition:
+  Enabled: false
+Layout/EmptyLinesAroundArguments:
+  Enabled: true
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+Layout/SpaceInsideParens:
+  Enabled: true
+  EnforcedStyle: no_space
+Layout/SpaceInsideReferenceBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
+Layout/SpaceInsideStringInterpolation:
+  Enabled: true
+  EnforcedStyle: no_space
+Layout/EndOfLine:
+  Enabled: true
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: normal
+  SupportedStyles:
+    - normal
+    - rails
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+  IgnoredPatterns: []
+Layout/EndAlignment:
+  Enabled: false
+  EnforcedStyleAlignWith: keyword
+Style/MissingElse:
+  Enabled: false
+  EnforcedStyle: both
+Layout/CaseIndentation:
+  Enabled: true
+  EnforcedStyle: case
+Layout/DefEndAlignment:
+  Enabled: true
+  EnforcedStyleAlignWith: start_of_line
+Lint/MissingSuper:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+  Max: 6
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+
+Naming/ClassAndModuleCamelCase:
+  Description: Use CamelCase for classes and modules.
+  StyleGuide: https://github.com/rubocop-hq/ruby-style-guide#camelcase-classes
+  Enabled: true
+Naming/VariableName:
+  Description: Use the configured style when naming variables.
+  StyleGuide: https://github.com/rubocop-hq/ruby-style-guide#snake-case-symbols-methods-vars
+  Enabled: false
+  EnforcedStyle: snake_case
+  SupportedStyles:
+    - snake_case
+    - camelCase
+Style/AndOr:
+  Enabled: true
+  EnforcedStyle: conditionals
+Style/ArrayJoin:
+  Enabled: true
+Style/Attr:
+  Enabled: true
+#TODO: Enable
+Style/AutoResourceCleanup:
+  Enabled: false
+Style/BeginBlock:
+  Enabled: true
+Style/BlockComments:
+  Enabled: true
+Style/CaseEquality:
+  Enabled: true
+Style/CharacterLiteral:
+  Enabled: true
+Style/ClassCheck:
+  Enabled: true
+Style/ClassMethods:
+  Enabled: true
+#TODO: Enable
+Style/ClassVars:
+  Enabled: false
+Style/ColonMethodCall:
+  Enabled: false
+Style/ColonMethodDefinition:
+  Enabled: true
+Style/DefWithParentheses:
+  Enabled: true
+Style/EmptyCaseCondition:
+  Enabled: true
+Style/Encoding:
+  Enabled: true
+Style/EndBlock:
+  Enabled: true
+Style/EvenOdd:
+  Enabled: true
+Style/LambdaCall:
+  Enabled: true
+#TODO: Enable
+Style/MethodDefParentheses:
+  Enabled: false
+Style/MixinGrouping:
+  Enabled: true
+Style/MixinUsage:
+  Enabled: true
+Style/MultilineIfThen:
+  Enabled: true
+Style/MultilineMemoization:
+  Enabled: true
+#TODO: Enable
+Style/NestedParenthesizedCalls:
+  Enabled: false
+#TODO: Enable
+Style/Next:
+  Enabled: false
+#TODO: Enable
+Style/NumericLiterals:
+  Enabled: false
+#TODO: Enable
+Style/PerlBackrefs:
+  Enabled: false
+Style/HashEachMethods:
+  Enabled: true
